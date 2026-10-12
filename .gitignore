@@ -5,3 +5,4 @@ downloads/
 temp/
 .pytest_cache/
 *.log
+scratch/

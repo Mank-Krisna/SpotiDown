@@ -2,6 +2,18 @@
 // SpotiDown — Frontend Application Logic
 // ==========================================================
 
+// Auto-unregister stale service worker from other projects on this host/domain
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    for (const reg of registrations) reg.unregister();
+  });
+}
+if ('caches' in window) {
+  caches.keys().then(keys => {
+    for (const k of keys) caches.delete(k);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // Elements
   const urlForm = document.getElementById("urlForm");

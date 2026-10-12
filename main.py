@@ -174,6 +174,22 @@ async def serve_file(filename: str):
         media_type="application/octet-stream"
     )
 
+@app.get("/sw.js")
+async def kill_service_worker():
+    """Unregister any stale service worker from past projects on this domain."""
+    from fastapi.responses import Response
+    content = """
+    self.addEventListener('install', (e) => { self.skipWaiting(); });
+    self.addEventListener('activate', (e) => {
+        self.registration.unregister().then(() => {
+            return self.clients.matchAll();
+        }).then((clients) => {
+            clients.forEach(client => client.navigate(client.url));
+        });
+    });
+    """
+    return Response(content=content, media_type="application/javascript")
+
 # Static files mount & root index
 if os.path.exists(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
