@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: spotidown
+    env: docker
+    plan: free
+    region: singapore
+    dockerfilePath: Dockerfile
+    healthCheckPath: /
+    autoDeploy: true

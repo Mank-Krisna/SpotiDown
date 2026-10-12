@@ -52,6 +52,35 @@ Buka browser di: **`http://127.0.0.1:8000`**
 
 ---
 
+## 🐳 Jalankan via Docker
+
+```bash
+# Build Docker image
+docker build -t spotidown .
+
+# Jalankan container
+docker run -d -p 8000:8000 --name spotidown-app spotidown
+```
+
+---
+
+## ☁️ Panduan Deploy ke Cloud (Gratis & Mudah)
+
+### Opsi 1: Render.com (Direkomendasikan)
+1. Buka [render.com](https://render.com) dan login dengan akun GitHub kamu.
+2. Klik **New +** $\rightarrow$ **Web Service**.
+3. Pilih repository **`Mank-Krisna/SpotiDown`**.
+4. Render akan otomatis mendeteksi konfigurasi **Docker** dan file `render.yaml`.
+5. Klik **Deploy Web Service**. Selesai!
+
+### Opsi 2: Railway.app
+1. Buka [railway.app](https://railway.app) dan login dengan GitHub.
+2. Klik **New Project** $\rightarrow$ **Deploy from GitHub repo**.
+3. Pilih repository **`SpotiDown`**.
+4. Railway otomatis mem-build menggunakan `Dockerfile`.
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Backend:** FastAPI, Python 3, `yt-dlp`, `mutagen`, `requests`
