@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpotiDown — Spotify MP3, WAV & FLAC Downloader</title>
+  <meta name="description" content="Unduh lagu, album, dan playlist Spotify ke format MP3 320kbps, WAV lossless, FLAC, atau M4A lengkap dengan cover art dan tag metadata gratis tanpa login.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="background-glow top-left"></div>
+  <div class="background-glow bottom-right"></div>
+
+  <header class="navbar">
+    <div class="container nav-content">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.435-5.308-1.76-8.792-.963-.335.077-.67-.133-.746-.467-.077-.334.132-.67.467-.746 3.808-.87 7.076-.5 9.72 1.113.295.18.388.562.208.856zm1.223-2.724c-.226.368-.712.482-1.08.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.11-0.975-.523-.125-.413.11-.85.523-.975 3.633-1.103 8.147-.568 11.246 1.33.368.226.482.712.256 1.08zm.105-2.835C14.692 8.94 9.37 8.766 6.297 9.7c-.495.15-1.026-.13-1.176-.625-.15-.495.13-1.026.625-1.176 3.532-1.072 9.404-.868 13.183 1.375.444.263.59.84.327 1.284-.264.444-.84.59-1.342.302z"/>
+          </svg>
+        </div>
+        <span class="brand-name">Spoti<span>Down</span></span>
+      </div>
+      <div class="nav-badges">
+        <span class="badge badge-pulse">High Quality 320kbps</span>
+        <span class="badge">Lossless WAV & FLAC</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <h1 class="hero-title">Unduh Musik Spotify dengan Kualitas <span class="text-gradient">Terbaik</span></h1>
+        <p class="hero-subtitle">Konversi lagu, album, atau playlist Spotify ke <strong>MP3 (320kbps)</strong>, <strong>WAV (Lossless)</strong>, <strong>FLAC</strong>, atau <strong>M4A</strong> lengkap dengan cover art resolusi tinggi.</p>
+
+        <!-- Search Bar -->
+        <div class="search-box-wrapper">
+          <form id="urlForm" class="search-form">
+            <div class="input-container">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input 
+                type="text" 
+                id="spotifyUrl" 
+                placeholder="Tempel tautan Spotify di sini (misal: https://open.spotify.com/track/...)" 
+                required 
+                autocomplete="off"
+              >
+              <button type="button" id="pasteBtn" class="btn-paste" title="Tempel dari Clipboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span>Paste</span>
+              </button>
+            </div>
+            <button type="submit" id="fetchBtn" class="btn-primary">
+              <span class="btn-text">Analisa Link</span>
+              <div class="spinner hidden" id="fetchSpinner"></div>
+            </button>
+          </form>
+        </div>
+
+        <!-- Format Selector Options -->
+        <div class="format-selection-card">
+          <span class="format-label">Pilih Format Audio:</span>
+          <div class="format-chips" id="formatChips">
+            <button type="button" class="chip active" data-format="mp3">
+              <span class="chip-title">MP3</span>
+              <span class="chip-desc">320 kbps HQ</span>
+            </button>
+            <button type="button" class="chip" data-format="wav">
+              <span class="chip-title">WAV</span>
+              <span class="chip-desc">Lossless PCM</span>
+            </button>
+            <button type="button" class="chip" data-format="flac">
+              <span class="chip-title">FLAC</span>
+              <span class="chip-desc">Hi-Res Audio</span>
+            </button>
+            <button type="button" class="chip" data-format="m4a">
+              <span class="chip-title">M4A</span>
+              <span class="chip-desc">AAC 256k</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview Section -->
+      <section id="previewSection" class="preview-section hidden">
+        <div class="preview-card glass-panel">
+          <div class="preview-cover-wrapper">
+            <img id="previewCover" src="" alt="Album Artwork" class="preview-cover">
+            <div class="cover-shine"></div>
+          </div>
+          <div class="preview-details">
+            <div class="preview-meta-top">
+              <span id="previewTypeBadge" class="type-badge">TRACK</span>
+              <span id="previewYear" class="meta-tag">2024</span>
+              <span id="previewCountBadge" class="meta-tag hidden">1 Lagu</span>
+            </div>
+            <h2 id="previewTitle" class="preview-title">Judul Lagu</h2>
+            <p id="previewArtist" class="preview-artist">Nama Artis</p>
+            <p id="previewAlbum" class="preview-album">Nama Album</p>
+
+            <div class="preview-actions">
+              <button id="downloadMainBtn" class="btn-download-action">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span id="downloadBtnText">Unduh MP3</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tracklist Table (For Album / Playlist) -->
+        <div id="tracklistContainer" class="tracklist-container glass-panel hidden">
+          <div class="tracklist-header">
+            <h3>Daftar Lagu (<span id="trackCountDisplay">0</span>)</h3>
+            <button id="downloadAllBtn" class="btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download Semua (ZIP)</span>
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="tracks-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">#</th>
+                  <th>Judul & Artis</th>
+                  <th style="width: 100px;">Durasi</th>
+                  <th style="width: 140px; text-align: right;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tracklistTbody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Grid -->
+      <section class="features-section">
+        <h2 class="section-title">Mengapa Memilih SpotiDown?</h2>
+        <div class="features-grid">
+          <div class="feature-card glass-panel">
+            <div class="feature-icon">⚡</div>
+            <h3>Tanpa Akun & Cepat</h3>
+            <p>Tidak perlu login atau mendaftar API keys. Langsung tempel URL dan unduh lagu favorit dalam hitungan detik.</p>
+          </div>
+          <div class="feature-card glass-panel">
+            <div class="feature-icon">🎧</div>
+            <h3>Multi-Format Audio</h3>
+            <p>Dukungan format fleksibel: <strong>MP3 320kbps</strong>, <strong>WAV Lossless</strong>, <strong>FLAC</strong>, dan <strong>M4A</strong> berkualitas tinggi.</p>
+          </div>
+          <div class="feature-card glass-panel">
+            <div class="feature-icon">🎨</div>
+            <h3>Cover Art & Tag Otomatis</h3>
+            <p>File audio sudah disematkan cover artwork resolusi tinggi, nama artis, judul, album, dan tahun rilis otomatis.</p>
+          </div>
+          <div class="feature-card glass-panel">
+            <div class="feature-icon">📦</div>
+            <h3>Batch Playlist ke ZIP</h3>
+            <p>Unduh seluruh album atau playlist Spotify sekaligus dalam satu arsip ZIP siap dengar.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Progress Modal -->
+  <div id="progressModal" class="modal-overlay hidden">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3 id="modalTitle">Memproses Unduhan...</h3>
+        <button id="closeModalBtn" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="progress-info">
+          <p id="modalStatusText" class="status-message">Sedang mencari audio stream...</p>
+          <span id="modalPercent" class="percent-text">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div id="progressBar" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <p id="modalDetail" class="detail-message">Lagu: -</p>
+      </div>
+      <div class="modal-footer hidden" id="modalFooter">
+        <a id="modalDownloadLink" href="#" class="btn-primary btn-full" download>
+          <span>Unduh File Sekarang</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>© 2026 SpotiDown. Tool personal metadata & audio backup. Tidak terafiliasi dengan Spotify AB.</p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
